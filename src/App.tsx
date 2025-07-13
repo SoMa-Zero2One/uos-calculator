@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { convertToeicToIbt, convertIeltsToIbt } from "./utils/conversion";
+import { convertItpToIbt, convertIeltsToIbt } from "./utils/conversion";
 
 type UserInput = {
   id: number;
@@ -44,12 +44,10 @@ const App: React.FC = () => {
 
   const calculateFinalScore = (gpa: number, ibt: number): number => {
     // UOS 교환학생 점수 계산 공식
-    // 학점 4.0, IBT 90 -> 86.512점으로 계산
-    const gpaScore = (gpa / 4.0) * 40; // 학점 만점 40점
-    const ibtScore = (ibt / 120) * 45; // IBT 만점 45점
-    const documentScore = 1.512; // 서류점수 (예시)
+    const gpaScore = (gpa / 4.0) * 50;
+    const ibtScore = (ibt / 120) * 50;
 
-    return gpaScore + ibtScore + documentScore;
+    return gpaScore + ibtScore;
   };
 
   const handleCalculate = () => {
@@ -61,7 +59,7 @@ const App: React.FC = () => {
 
       // IBT 점수가 없으면 다른 점수로 변환
       if (!ibtNum && u.itp) {
-        ibtNum = convertToeicToIbt(parseFloat(u.itp));
+        ibtNum = convertItpToIbt(parseFloat(u.itp));
       }
       if (!ibtNum && u.ielts) {
         ibtNum = convertIeltsToIbt(parseFloat(u.ielts));
@@ -152,35 +150,9 @@ const App: React.FC = () => {
           <p className="font-semibold mb-4">안내 사항:</p>
           <ol className="list-decimal list-inside space-y-2">
             <li>
-              1학년 기기 바탕을 누르면 게산된 값을 그대로 유지할 수 있습니다.
-            </li>
-            <li>
-              위 게산은 공식적인 총액의 원습니다. 본교의 정식 절차의 무관하며,
-              경희대 학생의 실습용으로 만든 출력이지않습니다. 신을 방법을 이한
-              찬짬하여 <strong>단순 참고 목적</strong>으로 만들었습니다.
-            </li>
-            <li>
-              위 게산에서 <strong>서류점수</strong>는 <strong>10점 만점</strong>
-              으로 게산합니다.
-            </li>
-            <li>
-              위 게산의 점수 확산은 본교의 '평수 확산표'를 토대로 게산합니다.
-            </li>
-            <li>교환학생 최소 요구 점수 미측정 시 점수는 산출되지 않습니다.</li>
-            <li>
-              <strong>가산점 항목:</strong>
-            </li>
-            <ul className="list-disc list-inside ml-6 mt-2 space-y-1">
-              <li>봉사활동 100시간 이상인 경우 +1</li>
-              <li>
-                Global Collaborative Summer Program(GC) 수강자 과목당 +1점 (최대
-                +2점)
-              </li>
-              <li>Global Ambassador 활동 수료자 +1점 (최대 +1점)</li>
-            </ul>
-            <li>
-              등점시 발생 시 1) 학점, 2) 공인어학성적, 3) 서류점수 순으로
-              우선순위가 결정됩니다.
+              위 계산은 공식적인 효력이 없습니다. 본교의 정식 절차와 무관하며,
+              학생이 실습용으로 만든 홈페이지입니다. 산출 방법을 어림 짐작하여
+              [단순 참고 목적]으로 만들었습니다.
             </li>
           </ol>
         </div>
