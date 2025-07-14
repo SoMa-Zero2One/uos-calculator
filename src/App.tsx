@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import { convertItpToIbt, convertIeltsToIbt } from "./utils/conversion";
+import { convertToeicToIbt, convertIeltsToIbt } from "./utils/conversion";
 
 type UserInput = {
   id: number;
   gpa: string;
   ibt: string;
-  itp: string;
+  toeic: string;
   ielts: string;
 };
 
@@ -14,7 +14,7 @@ type CalculationResult = {
   id: number;
   gpa: number;
   ibt: number;
-  itp: number | null;
+  toeic: number | null;
   ielts: number | null;
   bonus: number;
   finalScore: number;
@@ -22,7 +22,7 @@ type CalculationResult = {
 
 const App: React.FC = () => {
   const [users, setUsers] = useState<UserInput[]>([
-    { id: Date.now(), gpa: "", ibt: "", itp: "", ielts: "" },
+    { id: Date.now(), gpa: "", ibt: "", toeic: "", ielts: "" },
   ]);
   const [results, setResults] = useState<CalculationResult[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const addUser = () => {
     setUsers([
       ...users,
-      { id: Date.now(), gpa: "", ibt: "", itp: "", ielts: "" },
+      { id: Date.now(), gpa: "", ibt: "", toeic: "", ielts: "" },
     ]);
   };
 
@@ -54,12 +54,12 @@ const App: React.FC = () => {
     const calculationResults = users.map((u) => {
       const gpaNum = parseFloat(u.gpa) || 0;
       let ibtNum = parseFloat(u.ibt) || 0;
-      const itpNum = u.itp ? parseFloat(u.itp) : null;
+      const toeicNum = u.toeic ? parseFloat(u.toeic) : null;
       const ieltsNum = u.ielts ? parseFloat(u.ielts) : null;
 
       // IBT 점수가 없으면 다른 점수로 변환
-      if (!ibtNum && u.itp) {
-        ibtNum = convertItpToIbt(parseFloat(u.itp));
+      if (!ibtNum && u.toeic) {
+        ibtNum = convertToeicToIbt(parseFloat(u.toeic));
       }
       if (!ibtNum && u.ielts) {
         ibtNum = convertIeltsToIbt(parseFloat(u.ielts));
@@ -72,7 +72,7 @@ const App: React.FC = () => {
         id: u.id,
         gpa: gpaNum,
         ibt: ibtNum,
-        itp: itpNum,
+        toeic: toeicNum,
         ielts: ieltsNum,
         bonus,
         finalScore,
@@ -101,7 +101,7 @@ const App: React.FC = () => {
                 <th className="border border-black px-4 py-3">사용자</th>
                 <th className="border border-black px-4 py-3">학점</th>
                 <th className="border border-black px-4 py-3">IBT</th>
-                <th className="border border-black px-4 py-3">ITP</th>
+                <th className="border border-black px-4 py-3">TOEIC</th>
                 <th className="border border-black px-4 py-3">IELTS</th>
                 <th className="border border-black px-4 py-3">가산점</th>
                 <th className="border border-black px-4 py-3">최종 점수</th>
@@ -120,7 +120,7 @@ const App: React.FC = () => {
                     {result.ibt > 0 ? result.ibt.toFixed(1) : "N/A"}
                   </td>
                   <td className="border border-black px-4 py-3 text-center">
-                    {result.itp ? result.itp.toString() : "N/A"}
+                    {result.toeic ? result.toeic.toString() : "N/A"}
                   </td>
                   <td className="border border-black px-4 py-3 text-center">
                     {result.ielts ? result.ielts.toString() : "N/A"}
@@ -193,9 +193,9 @@ const App: React.FC = () => {
             <input
               type="number"
               step="1"
-              placeholder="ITP 점수 (선택)"
-              value={u.itp}
-              onChange={(e) => handleChange(u.id, "itp", e.target.value)}
+              placeholder="TOEIC 점수 (선택)"
+              value={u.toeic}
+              onChange={(e) => handleChange(u.id, "toeic", e.target.value)}
               className="w-full mb-3 border border-gray-400 rounded px-3 py-2"
             />
             <input
