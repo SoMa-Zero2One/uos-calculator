@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
   const calculateFinalScore = (gpa: number, ibt: number): number => {
     // UOS 교환학생 점수 계산 공식
-    const gpaScore = (gpa / 4.0) * 50;
+    const gpaScore = (gpa / 4.5) * 50;
     const ibtScore = (ibt / 120) * 50;
 
     return gpaScore + ibtScore;
